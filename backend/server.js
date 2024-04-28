@@ -25,7 +25,7 @@ async function getAccessToken() {
 
 app.get('/ping', async (req, res) => {
     const accessToken = await getAccessToken(); 
-    const chatServiceUrl = process.env.CHAT_SERVICE_URL;
+    const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
     const response = await axios.get(`${chatServiceUrl}/ping`, {
         headers: {
             'Authorization': `Bearer ${accessToken}`,
@@ -39,7 +39,7 @@ app.post('/auth/login', async (req, res) => {
         const { username, password } = req.body;
         const accessToken = await getAccessToken(); 
 
-        const chatServiceUrl = process.env.CHAT_SERVICE_URL;
+        const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
         const response = await axios.post(`${chatServiceUrl}/login`, 
         {
             username,
@@ -61,7 +61,7 @@ app.post('/auth/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
         const accessToken = await getAccessToken(); 
-        const chatServiceUrl = process.env.CHAT_SERVICE_URL;
+        const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
         const response = await axios.post(`${chatServiceUrl}/register`, 
         {
             username,
@@ -85,7 +85,7 @@ app.get('/auth/allusers', async (req, res) => {
         const id = req.query.id;
         const accessToken = await getAccessToken(); 
 
-        const chatServiceUrl = process.env.CHAT_SERVICE_URL;
+        const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
         const response = await axios.get(`${chatServiceUrl}/allusers=${id}`, 
         req.body, {
             headers: {
@@ -105,7 +105,7 @@ app.get('/auth/logout', async (req, res) => {
         const id = req.query.id;
         const accessToken = await getAccessToken(); 
 
-        const chatServiceUrl = process.env.CHAT_SERVICE_URL;
+        const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
         const response = await axios.get(`${chatServiceUrl}/logout=${id}`, 
         req.body, {
             headers: {
@@ -119,12 +119,12 @@ app.get('/auth/logout', async (req, res) => {
     }
 });
 
-app.get('/auth/setAvatar', async (req, res) => {
+app.get('/messages/addmsg', async (req, res) => {
     try {
         const id = req.query.id;
         const accessToken = await getAccessToken(); 
 
-        const chatServiceUrl = process.env.CHAT_SERVICE_URL;
+        const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
         const response = await axios.post(`${chatServiceUrl}/setAvatar=${id}`, 
         req.body, {
             headers: {
@@ -134,6 +134,29 @@ app.get('/auth/setAvatar', async (req, res) => {
         res.status(response.status).send(response.data);
     } catch (error) {
         console.error('Error set avatar:', error);
+        res.status(error.response ? error.response.status : 500).send(error.message);
+    }
+});
+
+app.post('/auth/register', async (req, res) => {
+    try {
+        const { username, email, password } = req.body;
+        const accessToken = await getAccessToken(); 
+        const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
+        const response = await axios.post(`${chatServiceUrl}/register`, 
+        {
+            username,
+            email,
+            password
+        },
+        req.body, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        });
+        res.status(response.status).send(response.data);
+    } catch (error) {
+        console.error('Error register:', error);
         res.status(error.response ? error.response.status : 500).send(error.message);
     }
 });
