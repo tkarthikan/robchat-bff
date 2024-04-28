@@ -1,0 +1,5 @@
+server/models/dbScript.sql
+.DS_Store
+server/.env
+node_modules
+.env

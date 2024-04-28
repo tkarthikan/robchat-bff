@@ -1,0 +1,104 @@
+openapi: 3.0.0
+info:
+  title: Chat Service API
+  description: API for interacting with a chat service
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /ping:
+    get:
+      summary: Ping the chat service
+      responses:
+        '200':
+          description: Successful response
+        '500':
+          description: Internal server error
+  /auth/login:
+    post:
+      summary: Log in to the chat service
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful login
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful registration
+        '400':
+          description: Invalid request
+        '500':
+          description: Internal server error
+  /auth/allusers:
+    get:
+      summary: Get all users or a specific user
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          description: User ID
+      responses:
+        '200':
+          description: Successful response
+        '500':
+          description: Internal server error
+  /auth/logout:
+    get:
+      summary: Log out a user
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          description: User ID
+      responses:
+        '200':
+          description: Successful logout
+        '500':
+          description: Internal server error
+  /auth/setAvatar:
+    get:
+      summary: Set user avatar
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          description: User ID
+      responses:
+        '200':
+          description: Successful response
+        '500':
+          description: Internal server error
