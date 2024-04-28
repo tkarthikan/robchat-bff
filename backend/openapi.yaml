@@ -6,44 +6,20 @@ info:
 servers:
   - url: http://localhost:8080
 paths:
-  /ping:
-    get:
-      summary: Ping the chat service
-      responses:
-        '200':
-          description: Successful response
-        '500':
-          description: Internal server error
   /auth/login:
     post:
-      summary: Log in to the chat service
+      summary: User login
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
+              $ref: '#/components/schemas/LoginRequest'
       responses:
         '200':
-          description: Successful login
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: boolean
-                  user:
-                    $ref: '#/components/schemas/User'
+          description: OK
         '400':
-          description: Invalid request
-        '500':
-          description: Internal server error
+          description: Bad Request
   /auth/register:
     post:
       summary: Register a new user
@@ -52,89 +28,102 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                email:
-                  type: string
-                password:
-                  type: string
+              $ref: '#/components/schemas/RegisterRequest'
       responses:
         '200':
-          description: Successful registration
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  // define the properties of the response if needed
-        '500':
-          description: Internal server error
+          description: OK
+        '400':
+          description: Bad Request
   /auth/allusers/{id}:
     get:
-      summary: Get all users or a specific user
+      summary: Get all users
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: string
-          description: User ID
       responses:
         '200':
-          description: Successful response
+          description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
-        '500':
-          description: Internal server error
-  /auth/setAvatar/{id}:
+        '404':
+          description: Not Found
+  /auth/setavatar/{id}:
     post:
-      summary: Set user avatar
+      summary: Set avatar for a user
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: string
-          description: User ID
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                image:
-                  type: string
+              $ref: '#/components/schemas/AvatarRequest'
       responses:
         '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                // define the properties of the response if needed
-        '500':
-          description: Internal server error
+          description: OK
+        '400':
+          description: Bad Request
   /auth/logout/{id}:
     get:
-      summary: Log out a user
+      summary: User logout
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: string
-          description: User ID
       responses:
         '200':
-          description: Successful logout
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /messages/addmsg/:
+    post:
+      summary: Add a message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        '200':
+          description: OK
         '400':
-          description: Bad request
+          description: Bad Request
+  /messages/getmsg/:
+    post:
+      summary: Get messages
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        '400':
+          description: Bad Request
+  /ping:
+    get:
+      summary: Ping endpoint
+      responses:
+        '200':
+          description: OK
           content:
             application/json:
               schema:
@@ -142,11 +131,62 @@ paths:
                 properties:
                   msg:
                     type: string
-        '500':
-          description: Internal server error
+                example:
+                  msg: Ping Successful
 components:
   schemas:
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    RegisterRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    AvatarRequest:
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+      required:
+        - avatarUrl
     User:
       type: object
       properties:
-        // define the properties of the user object
+        id:
+          type: string
+        username:
+          type: string
+        avatarUrl:
+          type: string
+      required:
+        - id
+        - username
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+        sender:
+          type: string
+        receiver:
+          type: string
+      required:
+        - id
+        - text
+        - sender
+        - receiver
