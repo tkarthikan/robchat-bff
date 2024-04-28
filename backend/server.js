@@ -59,7 +59,7 @@ app.post('/auth/login', async (req, res) => {
 
 app.post('/auth/register', async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const {email, password, username} = req.body;
         const accessToken = await getAccessToken(); 
         const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
         const response = await axios.post(`${chatServiceUrl}/auth/register`, 
@@ -80,9 +80,9 @@ app.post('/auth/register', async (req, res) => {
     }
 });
 
-app.get('/auth/allusers', async (req, res) => {
+app.get('/auth/allusers/:id', async (req, res) => {
     try {
-        const id = req.query.id;
+        const id = req.params.id; 
         const accessToken = await getAccessToken(); 
 
         const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
@@ -100,9 +100,9 @@ app.get('/auth/allusers', async (req, res) => {
 });
 
 
-app.get('/auth/logout', async (req, res) => {
+app.get('/auth/logout/:id', async (req, res) => {
     try {
-        const id = req.query.id;
+        const id = req.params.id; 
         const accessToken = await getAccessToken(); 
 
         const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
@@ -119,9 +119,10 @@ app.get('/auth/logout', async (req, res) => {
     }
 });
 
-app.post('/auth/setavatar', async (req, res) => {
+app.post('/auth/setavatar/:id', async (req, res) => {
     try {
-        const {image} = req.body;
+        const userId = req.params.id;
+        const image = req.body.image;
         const accessToken = await getAccessToken(); 
 
         const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
