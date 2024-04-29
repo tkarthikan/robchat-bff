@@ -143,7 +143,7 @@ app.post('/auth/setavatar/:id', async (req, res) => {
 });
 
 
-app.get('/messages/addmsg', async (req, res) => {
+app.post('/messages/addmsg', async (req, res) => {
     try {
         const { from, to, message } = req.body;
         const accessToken = await getAccessToken(); 
