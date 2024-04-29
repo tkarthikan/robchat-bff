@@ -126,7 +126,7 @@ app.post('/auth/setavatar/:id', async (req, res) => {
         const accessToken = await getAccessToken(); 
 
         const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
-        const response = await axios.post(`${chatServiceUrl}/auth/setavatar/${id}`, 
+        const response = await axios.post(`${chatServiceUrl}/auth/setavatar/${userId}`, 
         {
             image: image
         },
