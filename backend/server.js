@@ -145,12 +145,12 @@ app.post('/auth/setavatar/:id', async (req, res) => {
 
 app.post('/messages/addmsg', async (req, res) => {
     try {
-        const { from, to, message } = req.body;
+        const { fromm, to, message } = req.body;
         const accessToken = await getAccessToken(); 
         const chatServiceUrl = process.env.CHAT_SERVICE_SERVICE_URL;
         const response = await axios.post(`${chatServiceUrl}/messages/addmsg`, 
         {
-            from: from,
+            from: fromm,
             to: to,
             message: message,
         },
