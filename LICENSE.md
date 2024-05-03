@@ -2,6 +2,10 @@
 
 This software includes the following third-party packages, each with its own license.
 
+## Node.js
+- License: MIT License
+- Repository: [GitHub](https://github.com/nodejs/node)
+
 ## axios
 - License: MIT License
 - Repository: [GitHub](https://github.com/axios/axios)
